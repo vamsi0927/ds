@@ -1,0 +1,1695 @@
+1.You are given with an array arr which contains integer elements. Sort these elements in ascending order using insertion sort and print the 6th Iteration result.
+
+Example:
+Input:98,23,45,14,6,67,33,42
+Output:6,14,23,33,45,67,98,42
+answers:
+#include <stdio.h>
+void insertionSort(int arr[], int n) {
+    int i, j, key;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+        if (i == 6) {
+            printf("After the 6th iteration: ");
+            for (int k = 0; k < n; k++) {
+                printf("%d ", arr[k]);
+            }
+            printf("\n");
+        }
+    }
+}
+int main() {
+    int arr[] = {98, 23, 45, 14, 6, 67, 33, 42};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    insertionSort(arr, n); 
+    printf("Sorted array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    return 0;
+}
+2.You are given an undirected graph G(V, E) with N vertices and M edges. We need to 
+find the minimum number of edges between a given pair of vertices (u, v).
+Examples: 
+
+
+
+
+
+
+
+
+Input: For given graph G. Find minimum number of edges between (1, 5).
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <limits.h>
+
+#define MAX_VERTICES 100
+
+void addEdge(int graph[MAX_VERTICES][MAX_VERTICES], int u, int v) {
+    graph[u][v] = 1;
+    graph[v][u] = 1;
+}
+int minEdgeBFS(int graph[MAX_VERTICES][MAX_VERTICES], int n, int u, int v) {
+    bool visited[MAX_VERTICES];
+    int distance[MAX_VERTICES];
+    int queue[MAX_VERTICES], front = 0, rear = 0;
+
+    memset(visited, false, sizeof(visited));
+    memset(distance, -1, sizeof(distance));
+
+    visited[u] = true;
+    distance[u] = 0;
+    queue[rear++] = u;
+
+    while (front < rear) {
+        int current = queue[front++];
+      
+        for (int i = 0; i < n; i++) {
+            if (graph[current][i] == 1 && !visited[i]) {
+                visited[i] = true;
+                distance[i] = distance[current] + 1;
+                queue[rear++] = i;
+
+                if (i == v) {
+                    return distance[v];
+                }
+            }
+        }
+    }
+
+    return -1; 
+}
+
+int main() {
+    int n = 6; 
+    int graph[MAX_VERTICES][MAX_VERTICES] = {0}; 
+
+    addEdge(graph, 0, 1);
+    addEdge(graph, 1, 2);
+    addEdge(graph, 2, 3);
+    addEdge(graph, 3, 4);
+    addEdge(graph, 1, 4);
+    addEdge(graph, 4, 5);
+
+    int u = 1, v = 5; 
+    int minEdges = minEdgeBFS(graph, n, u, v);
+
+    if (minEdges != -1) {
+        printf("Minimum number of edges between %d and %d is: %d\n", u, v, minEdges);
+    } else {
+        printf("No path exists between %d and %d\n", u, v);
+    }
+
+    return 0;
+}
+3.Given the head of a singly linked list, return number of nodes present in a linked 
+
+Example 1:
+1->2->3->5->8
+Output 5
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node* next;
+};
+int countNodes(struct Node* head) {
+    int count = 0; 
+    struct Node* current = head; 
+    while (current != NULL) {
+        count++; 
+        current = current->next; 
+    }
+    return count;
+}
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+void printList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+int main() {
+    struct Node* head = createNode(1);
+    head->next = createNode(2);
+    head->next->next = createNode(3);
+    head->next->next->next = createNode(5);
+    head->next->next->next->next = createNode(8);
+    printf("Linked List: ");
+    printList(head);
+    int count = countNodes(head);
+    printf("Number of nodes in the linked list: %d\n", count);
+    struct Node* current = head;
+    struct Node* nextNode;
+    while (current != NULL) {
+        nextNode = current->next;
+        free(current);
+        current = nextNode;
+    }
+
+    return 0;
+}
+
+4.
+	Given a number n.  the task is to print the Fibonacci series and the sum of the series  using recursion.  
+
+input: n=10 
+output: Fibonacci series  
+0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+
+Sum: 88
+
+#include<stdio.h>
+int fibo(int n){
+ static  int n1=0,n2=1,n3,sum=1;
+  if(n>0)
+  {
+     n3=n1+n2;
+    sum+=n3;
+     printf("%d ",n3);
+     n1=n2;
+     n2=n3;
+  return fibo(n-1);
+  }
+  printf("sum of fibonacciseries is %d ",sum);
+ }
+int main()
+{
+  int x;
+  printf("enter a no:");
+  scanf("%d",&x);
+  printf("%d %d",0,1);
+  fibo(x-2);
+  return 0;
+}
+
+
+5.
+	You are given an array arr in increasing order. Find the element x from arr using binary search.
+Example 1: arr={ 1,5,6,7,9,10},X=6 
+Output : Element found at location 2
+Example 2: arr={ 1,5,6,7,9,10},X=11 
+Output : Element not found at location 2
+
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+    int data;
+    struct Node* next;
+};
+int countNodes(struct Node* head) {
+    int count = 0; 
+    struct Node* current = head; 
+    while (current != NULL) {
+        count++; 
+        current = current->next; 
+    }
+    return count;
+}
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+void printList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
+int main() {
+    struct Node* head = createNode(1);
+    head->next = createNode(2);
+    head->next->next = createNode(3);
+    head->next->next->next = createNode(5);
+    head->next->next->next->next = createNode(8);
+    printf("Linked List: ");
+    printList(head);
+    int count = countNodes(head);
+    printf("Number of nodes in the linked list: %d\n", count);
+    struct Node* current = head;
+    struct Node* nextNode;
+    while (current != NULL) {
+        nextNode = current->next;
+        free(current);
+        current = nextNode;
+    }
+
+    return 0;
+}
+
+
+6.
+	Write a program to traverse the nodes present in the following tree in inorder and postorder traversal
+
+#include<stdio.h>
+#include<stdlib.h>
+struct Node{
+  int data;
+  struct Node*left;
+  struct Node*right;
+};
+
+struct Node*createnode(int data){
+  struct Node*newnode=(struct Node*)malloc(sizeof(struct Node));
+  newnode->data=data;
+  newnode->left=NULL;
+  newnode->right=NULL;
+  return newnode;
+}
+void inordertraversal(struct Node*root){
+  if(root!=NULL){
+    inordertraversal(root->left);
+    printf("%d",root->data);
+    inordertraversal(root->right);
+  }
+}
+void preordertraversal(struct Node*root){
+  if(root!=NULL){
+    printf("%d",root->data);
+    preordertraversal(root->left);
+    preordertraversal(root->right);
+  }
+}
+void postordertraversal(struct Node*root){
+  if(root!=NULL){
+    postordertraversal(root->left);
+    postordertraversal(root->right);
+    printf("%d",root->data);
+  }
+}
+int main(){
+  struct Node*root=createnode(3);
+  root->left=createnode(9);
+  root->right=createnode(20);
+  root->right->left=createnode(15);
+  root->right->right=createnode(7);
+  
+  printf("inordertraversal:");
+  inordertraversal(root);
+  printf("\n");
+  
+  printf("preordertraversal:");
+  preordertraversal(root);
+  printf("\n");
+  
+  printf("postordertraversal:");
+  postordertraversal(root);
+  printf("\n");
+  
+  return 0;
+}
+
+
+7.
+	Given a string s, sort it in ascending  order  and find the starting index of repeated character 
+Input: s = "tree"
+Output: "eert", starting index 0
+Input: s = "kkj"
+Output: "jkk", starting index : 1
+Example 2:
+Input: s = "cccaaa"
+Output: "aaaccc", starting index 0,3
+Example 3:
+Input: s = "Aabb"
+Output: "bbAa",starting index 0,2
+
+#include <stdio.h>
+#include <string.h>
+
+void sortString(char *s) {
+    int len = strlen(s);
+    for (int i = 0; i < len - 1; i++) {
+        for (int j = 0; j < len - i - 1; j++) {
+            if (s[j] > s[j + 1]) {
+                char temp = s[j];
+                s[j] = s[j + 1];
+                s[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void findRepeatedChars(char *s, int *startIndex) {
+    int len = strlen(s);
+    int count = 1;
+    for (int i = 1; i < len; i++) {
+        if (s[i] == s[i - 1]) {
+            count++;
+            if (count == 2) {
+                *startIndex = i - 1;
+            }
+        } else {
+            count = 1;
+        }
+    }
+}
+
+int main() {
+    char s[] = "kkj";
+    sortString(s);
+    printf("Sorted string: %s\n", s);
+
+    int startIndex;
+    findRepeatedChars(s, &startIndex);
+    printf("Starting index of repeated character: %d\n", startIndex);
+
+    return 0;
+}
+
+8.
+Given the head of a singly linked list, return true if it is a palindrome or false otherwise. 
+Example 1: 
+Input: head = [1,2,2,1] 
+Output: true
+Example 2:
+Input: head = [1,2]
+Output: false
+Input: R->A->D->A->R->NULL
+Output: Yes
+Input: C->O->D->E->NULL
+Output: No
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+struct ListNode {
+    int val;
+    struct ListNode *next;
+};
+
+struct ListNode* findMiddle(struct ListNode* head) {
+    struct ListNode* slow = head;
+    struct ListNode* fast = head;
+    
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    
+    return slow;
+}
+
+struct ListNode* reverseList(struct ListNode* head) {
+    struct ListNode* prev = NULL;
+    struct ListNode* current = head;
+    struct ListNode* next = NULL;
+    
+    while (current != NULL) {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+    
+    return prev;
+}
+bool isPalindrome(struct ListNode* head) {
+    if (head == NULL || head->next == NULL) {
+        return true;
+    }
+    
+    struct ListNode* middle = findMiddle(head);
+    
+    struct ListNode* secondHalfStart = reverseList(middle);
+    struct ListNode* copyOfSecondHalf = secondHalfStart; 
+    
+    struct ListNode* firstHalf = head;
+    bool palindrome = true;
+    
+    while (secondHalfStart != NULL) {
+        if (firstHalf->val != secondHalfStart->val) {
+            palindrome = false;
+            break;
+        }
+        firstHalf = firstHalf->next;
+        secondHalfStart = secondHalfStart->next;
+    }
+    
+    reverseList(copyOfSecondHalf);
+    
+    return palindrome;
+}
+
+struct ListNode* createNode(int value) {
+    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newNode->val = value;
+    newNode->next = NULL;
+    return newNode;
+}
+void printList(struct ListNode* head) {
+    while (head != NULL) {
+        printf("%d -> ", head->val);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+   
+    struct ListNode* head1 = createNode(1);
+    head1->next = createNode(2);
+    head1->next->next = createNode(2);
+    head1->next->next->next = createNode(1);
+    
+    printf("Is palindrome: %s\n", isPalindrome(head1) ? "true" : "false");
+
+    struct ListNode* head2 = createNode(1);
+    head2->next = createNode(2);
+    
+    printf("Is palindrome: %s\n", isPalindrome(head2) ? "true" : "false");
+
+    return 0;
+}
+
+9.
+	Given the root of a binary search tree and K as input, find Kth smallest element in BST. 
+For example, in the following BST, 
+
+#include<stdio.h>
+#include<stdlib.h>
+#define max 100
+int count=0;
+struct stack{
+  int stack[max];
+  int top=-1;
+};
+
+typedef struct stack st;
+
+void minstack(st*s){
+  s->top=-1;
+}
+int isfull(st*s){
+  if(s->top==max-1)
+    return 1;
+  else
+    return 0;
+}
+int isempty(st*s){
+  if(s->top==-1)
+    return 1;
+  else
+    return 0;
+}
+void push(st*s,int newitem){
+  if(isfull(s))
+    printf("stack overflow\n");
+  else{
+    s->top++;
+    s->stack[s->top]=newitem;
+    count++;
+  }
+}
+void pop(st*s){
+  if(isempty(s))
+    printf("stack underflow\n");
+  else{
+    printf("deleted element:%d",s->stack[s->top]);
+    s->top--;
+    count--;
+  }
+}
+void peek(st*s){
+  if(isempty(s))
+    printf("stack underflow\n");
+  else{
+    printf("the peek element in the stck is %d",s->stack[s->top]);
+  }
+}
+void display(st*s){
+  priintf("stack:");
+  for(i=0;i<count;i++){
+    printf("%d",s->stack[i]);
+  }
+}
+int main()
+{
+  st*s=(st*)malloc(sizeof(st));
+  push(s,1);
+  push(s,2);
+  push(s,3);
+  push(s,4);
+  peek(s);
+  display(s);
+  return 0;
+}
+
+
+10.
+	Given a string s, find the frequency of characters
+Example 1:
+Input: s = "tree"
+Output t->1, r->1, e->2
+
+#include <stdio.h>
+#include <string.h>
+
+#define ASCII_SIZE 256 
+
+void countCharacterFrequency(const char* s) {
+    int count[ASCII_SIZE] = {0};
+    int length = strlen(s);
+
+    for (int i = 0; i < length; i++) {
+        count[(unsigned char)s[i]]++;
+    }
+
+    printf("Character frequencies:\n");
+    for (int i = 0; i < ASCII_SIZE; i++) {
+        if (count[i] > 0) {
+            printf("%c -> %d\n", i, count[i]);
+        }
+    }
+}
+
+int main() {
+    const char* s = "tree";
+    countCharacterFrequency(s);
+    return 0;
+}
+
+11.
+	Given an unsorted array arr[] with both positive and negative elements, the task 
+is to find the smallest positive number missing from the array.
+Input:  arr[] = {2, 3, 7, 6, 8, -1, -10, 15}
+Output: 1
+Input:  arr[] = { 2, 3, -7, 6, 8, 1, -10, 15 }
+Output: 4
+Input: arr[] = {1, 1, 0, -1, -2}
+Output: 2
+
+#include <stdio.h>
+
+int findMissingPositive(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        while (arr[i] > 0 && arr[i] <= size && arr[arr[i] - 1] != arr[i]) {
+          
+            int temp = arr[i];
+            arr[i] = arr[temp - 1];
+            arr[temp - 1] = temp;
+        }
+    }
+
+    for (int i = 0; i < size; i++) {
+        if (arr[i] != i + 1) {
+            return i + 1;
+        }
+    }
+
+    return size + 1;
+}
+int main() {
+    int arr1[] = {2, 3, 7, 6, 8, -1, -10, 15};
+    int size1 = sizeof(arr1) / sizeof(arr1[0]);
+    printf("The smallest missing positive number is: %d\n", findMissingPositive(arr1, size1));
+
+    int arr2[] = {2, 3, -7, 6, 8, 1, -10, 15};
+    int size2 = sizeof(arr2) / sizeof(arr2[0]);
+    printf("The smallest missing positive number is: %d\n", findMissingPositive(arr2, size2)); 
+
+    int arr3[] = {1, 1, 0, -1, -2};
+    int size3 = sizeof(arr3) / sizeof(arr3[0]);
+    printf("The smallest missing positive number is: %d\n", findMissingPositive(arr3, size3));
+    return 0;
+}
+
+12.
+	Given two integer arrays preorder and inorder where preorder is the preorder 
+traversal of a binary tree and inorder is the inorder traversal of the same tree, 
+construct and return the binary tree.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+
+struct TreeNode* newNode(int val) {
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = val;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+int search(int* inorder, int start, int end, int value) {
+    for (int i = start; i <= end; i++) {
+        if (inorder[i] == value) {
+            return i;
+        }
+    }
+    return -1; 
+}
+
+struct TreeNode* buildTree(int* preorder, int* inorder, int inorderStart, int inorderEnd, int* preorderIndex) {
+    if (inorderStart > inorderEnd) {
+        return NULL;
+    }
+
+    struct TreeNode* root = newNode(preorder[*preorderIndex]);
+    (*preorderIndex)++;
+
+    if (inorderStart == inorderEnd) {
+        return root;
+    }
+
+    int inorderIndex = search(inorder, inorderStart, inorderEnd, root->val);
+
+    root->left = buildTree(preorder, inorder, inorderStart, inorderIndex - 1, preorderIndex);
+    root->right = buildTree(preorder, inorder, inorderIndex + 1, inorderEnd, preorderIndex);
+
+    return root;
+}
+
+struct TreeNode* constructBinaryTree(int* preorder, int preorderSize, int* inorder, int inorderSize) {
+    int preorderIndex = 0;
+    return buildTree(preorder, inorder, 0, inorderSize - 1, &preorderIndex);
+}
+
+void printInorder(struct TreeNode* node) {
+    if (node == NULL) return;
+    printInorder(node->left);
+    printf("%d ", node->val);
+    printInorder(node->right);
+}
+
+int main() {
+    int preorder[] = {3, 9, 20, 15, 7};
+    int inorder[] = {9, 3, 15, 20, 7};
+    int size = sizeof(preorder) / sizeof(preorder[0]);
+
+    struct TreeNode* root = constructBinaryTree(preorder, size, inorder, size);
+
+    printf("Inorder traversal of the constructed tree: ");
+    printInorder(root);
+
+    return 0;
+}
+
+13.
+	Write a program to create and display a linked list
+
+Example 1:
+
+Nodes : 6,7,8,9
+Output: 6->7->8->9
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void displayList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d", current->data);
+        if (current->next != NULL) {
+            printf("->");
+        }
+        current = current->next;
+    }
+    printf("\n");
+}
+
+int main() {
+
+    struct Node* head = createNode(6);
+    head->next = createNode(7);
+    head->next->next = createNode(8);
+    head->next->next->next = createNode(9);
+
+    printf("Nodes: ");
+    displayList(head);
+
+    struct Node* current = head;
+    struct Node* nextNode;
+    while (current != NULL) {
+        nextNode = current->next;
+        free(current);
+        current = nextNode;
+    }
+
+    return 0;
+}
+
+14.
+	Write a program to sort the below numbers in descending order using bubble sort
+Input 4,7,9,1,2
+Output:9,7,4,2,1
+
+
+#include <stdio.h>
+
+void bubbleSortDescending(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++)
+        for (int j = 0; j < n - i - 1; j++)
+            if (arr[j] < arr[j + 1])
+                // Swap elements
+                arr[j] ^= arr[j + 1] ^= arr[j] ^= arr[j + 1];
+}
+
+int main() {
+    int arr[] = {4, 7, 9, 1, 2};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    bubbleSortDescending(arr, n);
+    
+    printf("Sorted array in descending order: ");
+    for (int i = 0; i < n; i++)
+        printf("%d%s", arr[i], (i < n - 1) ? "," : "");
+    
+    printf("\n");
+    return 0;
+}
+
+15.
+	Given an array of size N-1 such that it only contains distinct integers in the 
+range of 1 to N. Find the missing element.
+Input:
+N = 5
+A[] = {1,2,3,5}
+Output: 4
+Input:
+N = 10
+A[] = {6,1,2,8,3,4,7,10,5}
+Output: 9
+
+#include <stdio.h>
+
+int findMissing(int A[], int N) {
+  
+    int expectedSum = N * (N + 1) / 2;
+
+    int actualSum = 0;
+    for (int i = 0; i < N - 1; i++) {
+        actualSum += A[i];
+    }
+
+    return expectedSum - actualSum;
+}
+
+int main() {
+ 
+    int N1 = 5;
+    int A1[] = {1, 2, 3, 5};
+    printf("Missing element in first example: %d\n", findMissing(A1, N1));
+
+    int N2 = 10;
+    int A2[] = {6, 1, 2, 8, 3, 4, 7, 10, 5};
+    printf("Missing element in second example: %d\n", findMissing(A2, N2));
+
+    return 0;
+}
+
+16.
+	Write a program to find odd number present in the data part of a node
+Example Linked List 1->2->3->7
+Output: 1,3,7
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void findOddNumbers(Node* head) {
+    Node* current = head;
+    printf("Odd numbers: ");
+    
+    while (current != NULL) {
+        if (current->data % 2 != 0) {
+            printf("%d", current->data);
+            if (current->next != NULL) {
+                printf(",");
+            }
+        }
+        current = current->next;
+    }
+    printf("\n");
+}
+int main() {
+    Node* head = createNode(1);
+    head->next = createNode(2);
+    head->next->next = createNode(3);
+    head->next->next->next = createNode(7);
+    
+    findOddNumbers(head);
+    
+    return 0;
+}
+
+17.
+	Write a program to perform insert and delete operations in a queue
+Example : 12,34,56,78
+After insertion of 60  content of the  queue is 12,34,56,78,60
+After deletion of 12 , the contents of the queue : 34,56,78,60
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 100
+
+int queue[MAX_SIZE];
+int front = -1, rear = -1;
+
+void enqueue(int element) {
+    if (rear == MAX_SIZE - 1) {
+        printf("Error: Queue is full\n");
+        return;
+    }
+    if (front == -1 && rear == -1) {
+        front = rear = 0;
+    } else {
+        rear++;
+    }
+    queue[rear] = element;
+}
+
+int dequeue() {
+    int element;
+    if (front == -1 && rear == -1) {
+        printf("Error: Queue is empty\n");
+        return -1;
+    }
+    element = queue[front];
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        front++;
+    }
+    return element;
+}
+
+int main() {
+    int choice, element;
+    
+    printf("Initial queue: 12, 34, 56, 78\n");
+    enqueue(12);
+    enqueue(34);
+    enqueue(56);
+    enqueue(78);
+    
+    printf("After insertion of 60, the queue is: ");
+    enqueue(60);
+    for (int i = front; i <= rear; i++) {
+        printf("%d ", queue[i]);
+    }
+    printf("\n");
+    
+    printf("After deletion of 12, the queue is: ");
+    dequeue();
+    for (int i = front; i <= rear; i++) {
+        printf("%d ", queue[i]);
+    }
+    printf("\n");
+    
+    return 0;
+}
+
+18.
+	Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+An input string is valid if:
+1. Open brackets must be closed by the same type of brackets.
+2. Open brackets must be closed in the correct order.
+Input: s = "()"
+Output: true
+Input: s = "()[]{}"
+Output: true
+Input: s = "(]"
+Output: false
+Input: s = "([)]"
+Output: false
+Input: s = "{[]}"
+Output: true
+
+#include <stdio.h>
+int main() 
+{
+    int n, i;
+    printf("Input the number of elements to store in the array: ");
+    scanf("%d", &n);
+    int arr[n];
+
+    // Input elements into the array
+    printf("Input %d number of elements in the array:\n", n);
+    for (i = 0; i < n; i++) {
+        printf("element - %d : ", i);
+        scanf("%d", &arr[i]);
+    }
+
+    // Display the values stored in the array
+    printf("The values stored in the array are:\n");
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    // Display the values in reverse order
+    printf("The values stored in the array in reverse are:\n");
+    for (i = n - 1; i >= 0; i--) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+19.
+	Given a number n, the task is to print the Fibonacci series and the sum of the series using Iterative procedure. 
+input n=10 
+output  
+Fibonacci series   
+0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+Sum: 88
+
+#include <stdio.h>
+
+int main() {
+    int n, a = 0, b = 1, c, sum = 0;
+    
+    printf("Enter the number of terms: ");
+    scanf("%d", &n);
+    
+    printf("Fibonacci series: ");
+    
+    for (int i = 0; i < n; i++) {
+        if (i <= 1) {
+            c = i;
+        } else {
+            c = a + b;
+            a = b;
+            b = c;
+        }
+        printf("%d", c);
+        if (i < n - 1) {
+            printf(", ");
+        }
+        sum += c;
+    }
+    
+    printf("\nSum: %d", sum);
+    
+    return 0;
+}
+
+20.
+	Given two strings needle and haystack, return the index of the first occurrence 
+of needle in haystack, or -1 if needle is not part of haystack.
+Example 1:
+Input: haystack = "sadbutsad", needle = "sad"
+Output: 0
+Explanation: "sad" occurs at index 0 and 6.
+The first occurrence is at index 0, so we return 0.
+Input: haystack = "leetcode", needle = "leeto"
+Output: -1
+Explanation: "leeto" did not occur in "leetcode", so we return -1.
+
+#include <stdio.h>
+#include <string.h>
+
+int strStr(char *haystack, char *needle) {
+
+    if (*needle == '\0') {
+        return 0;
+    }
+
+    int haystackLen = strlen(haystack);
+    int needleLen = strlen(needle);
+
+    for (int i = 0; i <= haystackLen - needleLen; i++) {
+        
+        if (strncmp(&haystack[i], needle, needleLen) == 0) {
+            return i; 
+        }
+    }
+
+    return -1;
+}
+
+int main() {
+    char haystack1[] = "sadbutsad";
+    char needle1[] = "sad";
+    printf("Output: %d\n", strStr(haystack1, needle1)); 
+    char haystack2[] = "leetcode";
+    char needle2[] = "leeto";
+    printf("Output: %d\n", strStr(haystack2, needle2));
+    return 0;
+}
+
+21.
+	Implement a first in first out (FIFO) queue using only two stacks. The 
+implemented queue should support all the functions of a normal queue (push, 
+peek, pop, and empty).
+Implement the MyQueue class:
+1. void push(int x) Pushes element x to the back of the queue.
+2. int pop() Removes the element from the front of the queue and returns it.
+3. int peek() Returns the element at the front of the queue.
+4. boolean empty() Returns true if the queue is empty, false otherwise.
+Input
+["MyQueue", "push", "push", "peek", "pop", "empty"]
+[[], [1], [2], [], [], []]
+Output
+[null, null, null, 1, 1, false]
+
+Explanation
+MyQueue myQueue = new MyQueue();
+myQueue.push(1); // queue is: [1]
+myQueue.push(2); // queue is: [1, 2] (leftmost is front of the queue)
+myQueue.peek(); // return 1
+myQueue.pop(); // return 1, queue is [2]
+myQueue.empty(); // return false
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+typedef struct Stack {
+    int *data;
+    int top;
+    int capacity;
+} Stack;
+
+typedef struct MyQueue {
+    Stack *stack1; 
+    Stack *stack2; 
+} MyQueue;
+
+Stack* createStack(int capacity) {
+    Stack *stack = (Stack *)malloc(sizeof(Stack));
+    stack->capacity = capacity;
+    stack->top = -1;
+    stack->data = (int *)malloc(stack->capacity * sizeof(int));
+    return stack;
+}
+
+void pushStack(Stack *stack, int x) {
+    stack->data[++stack->top] = x;
+}
+
+int popStack(Stack *stack) {
+    return stack->data[stack->top--];
+}
+
+bool isEmptyStack(Stack *stack) {
+    return stack->top == -1;
+}
+
+MyQueue* myQueueCreate() {
+    MyQueue *queue = (MyQueue *)malloc(sizeof(MyQueue));
+    queue->stack1 = createStack(100); 
+    queue->stack2 = createStack(100);
+    return queue;
+}
+
+void myQueuePush(MyQueue* obj, int x) {
+    pushStack(obj->stack1, x);
+}
+
+int myQueuePop(MyQueue* obj) {
+    if (isEmptyStack(obj->stack2)) {
+        while (!isEmptyStack(obj->stack1)) {
+            pushStack(obj->stack2, popStack(obj->stack1));
+        }
+    }
+    return popStack(obj->stack2);
+}
+int myQueuePeek(MyQueue* obj) {
+    if (isEmptyStack(obj->stack2)) {
+        while (!isEmptyStack(obj->stack1)) {
+            pushStack(obj->stack2, popStack(obj->stack1));
+        }
+    }
+    return obj->stack2->data[obj->stack2->top];
+}
+
+bool myQueueEmpty(MyQueue* obj) {
+    return isEmptyStack(obj->stack1) && isEmptyStack(obj->stack2);
+}
+
+void myQueueFree(MyQueue* obj) {
+    free(obj->stack1->data);
+    free(obj->stack1);
+    free(obj->stack2->data);
+    free(obj->stack2);
+    free(obj);
+}
+
+// Example usage
+int main() {
+    MyQueue* myQueue = myQueueCreate();
+    myQueuePush(myQueue, 1);
+    myQueuePush(myQueue, 2);
+    printf("%d\n", myQueuePeek(myQueue)); // return 1
+    printf("%d\n", myQueuePop(myQueue));  // return 1
+    printf("%d\n", myQueueEmpty(myQueue)); // return false
+    myQueueFree(myQueue);
+    return 0;
+}
+
+22.
+	Given an array arr, sort the elements in descending order using bubblesort.
+
+Arr=[9,10,-9,23,67,-90]
+Output:[67,23,10,9,-9,-90]
+
+#include <stdio.h>
+
+void bubbleSortDescending(int arr[], int n) {
+    int i, j, temp;
+  
+    for (i = 0; i < n - 1; i++) {
+     
+        for (j = 0; j < n - i - 1; j++) {
+           
+            if (arr[j] < arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int arr[] = {9, 10, -9, 23, 67, -90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    
+    printf("Original array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    bubbleSortDescending(arr, n);
+
+    printf("Sorted array in descending order: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+23.
+	You have been given a positive integer N. You need to find and print the 
+Factorial of this number without using recursion. The Factorial of a positive 
+integer N refers to the product of all number in the range from 1 to N.
+Input: N=2
+Output: 2
+Input: N=4
+Output: 24
+
+#include <stdio.h>
+
+int main() {
+    int N, i;
+    unsigned long long factorial = 1;
+
+    printf("Enter a positive integer: ");
+    scanf("%d", &N);
+
+    for (i = 1; i <= N; ++i) {
+        factorial *= i;
+    }
+
+    printf("Factorial of %d is %llu\n", N, factorial);
+
+    return 0;
+}
+
+24.
+	Given an array arr, sort the elements in ascending order using Bubble sort. 
+Arr=[9,10,-9,23,67,-90] 
+Output:[-90,-9,9,10,23,67] 
+
+
+#include <stdio.h>
+void bubbleSort(int arr[], int n) {
+    int i, j, temp;
+    for (i = 0; i < n - 1; i++) {
+        for (j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+               
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+int main() {
+    int arr[] = {9, 10, -9, 23, 67, -90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int i;
+    printf("Original array: ");
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    bubbleSort(arr, n);
+    printf("Sorted array: ");
+    for (i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+    return 0;
+}
+
+25.
+	Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+Implement the MinStack class:
+1. MinStack() initializes the stack object.
+2. void push(int val) pushes the element val onto the stack.
+3. void pop() removes the element on the top of the stack.
+4. int top() gets the top element of the stack.
+5. int getMin() retrieves the minimum element in the stack.
+Input
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+Output
+[null,null,null,null,-3,null,0,-2]
+Explanation
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin(); // return -3
+minStack.pop();
+minStack.top();    // return 0
+minStack.getMin(); // return -2
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#define max 100
+int count=0;
+struct stack{
+  int stack[max];
+  int top;
+};
+
+typedef struct stack st;
+
+void minstack(st*s){
+  s->top=-1;
+}
+int isfull(st*s){
+  if(s->top==max-1)
+    return 1;
+  else
+    return 0;
+}
+int isempty(st*s){
+  if(s->top==-1)
+    return 1;
+  else
+    return 0;
+}
+void push(st*s,int newitem){
+  if(isfull(s))
+    printf("stack overflow\n");
+  else{
+    s->top++;
+    s->stack[s->top]=newitem;
+    count++;
+  }
+}
+void pop(st*s){
+  if(isempty(s))
+    printf("stack underflow\n");
+  else{
+    printf("deleted element:%d",s->stack[s->top]);
+    s->top--;
+    count--;
+  }
+}
+void peek(st*s){
+  if(isempty(s))
+    printf("stack underflow\n");
+  else{
+    printf("the peek element in the stack is %d\n",s->stack[s->top]);
+  }
+}
+void display(st*s){
+  printf("stack:");
+  for(int i=0;i<count;i++){
+    printf("%d",s->stack[i]);
+  }
+}
+void minele(st*s,int k){
+    int temp;
+    for (int i=0;i<count;i++){
+        for(int j=i+1;j<count;j++){
+            temp=s->stack[i];
+            s->stack[i]=s->stack[j];
+            s->stack[j]=temp;
+        }
+    }
+    printf("the k th element is %d",s->stack[k]);
+}
+int main()
+{
+  st*s=(st*)malloc(sizeof(st));
+  push(s,1);
+  push(s,2);
+  push(s,3);
+  push(s,4);
+  peek(s);
+  display(s);
+  minele(s,2);
+  return 0;
+}
+
+26.
+	Find the factorial of a number using iterative procedure
+Input : 3
+Output: 6
+
+
+#include <stdio.h>
+
+int factorial(int n) {
+    int result = 1;
+    for (int i = 1; i <= n; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+int main() {
+    int n = 3;
+    printf("Factorial of %d is %d\n", n, factorial(n));
+    return 0;
+}
+
+27.
+	Given the head of a linked list, insert the node in nth place and return its head. 
+Input: head = [1,3,2,3,4,5], p=3 n = 2 
+Output: [1,3,2,3,4,5] 
+Input: head = [1], p = 0, n = 1 
+Output: [0,1] 
+Input: head = [1,2], p=3, n = 3 
+Output: [1,2,3] 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a linked list node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to insert a node at the nth position
+struct Node* insertNode(struct Node* head, int p, int n) {
+    struct Node* newNode = createNode(p);
+    
+    // If inserting at the head (position 0)
+    if (n == 0) {
+        newNode->next = head;
+        return newNode;
+    }
+
+    struct Node* current = head;
+    int count = 0;
+
+    // Traverse the list to find the position to insert
+    while (current != NULL && count < n - 1) {
+        current = current->next;
+        count++;
+    }
+
+    if (current == NULL) {
+        return head;
+    }
+
+    newNode->next = current->next;
+    current->next = newNode;
+
+    return head;
+}
+
+void printList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
+// Function to free the linked list
+void freeList(struct Node* head) {
+    struct Node* current = head;
+    struct Node* next;
+    while (current != NULL) {
+        next = current->next;
+        free(current);
+        current = next;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+    head->next->next->next = createNode(3);
+    head->next->next->next->next = createNode(4);
+    head->next->next->next->next->next = createNode(5);
+
+    printf("Original list: ");
+    printList(head);
+
+    // Insert 3 at position 2
+    head = insertNode(head, 3, 2);
+    printf("After inserting 3 at position 2: ");
+    printList(head);
+
+    // Free the linked list
+    freeList(head);
+
+    // Create a new list [1]
+    head = createNode(1);
+    printf("Original list: ");
+    printList(head);
+
+    head = insertNode(head, 0, 1);
+    printf("After inserting 0 at position 1: ");
+    printList(head);
+
+    freeList(head);
+
+    head = createNode(1);
+    head->next = createNode(2);
+    printf("Original list: ");
+    printList(head);
+
+    head = insertNode(head, 3, 3);
+    printf("After inserting 3 at position 3: ");
+    printList(head);
+
+    freeList(head);
+
+    return 0;
+}
+
+28.
+	Given the head of a singly linked list and two integers left and right where left <= right, reverse the nodes of the list from position left to position right, and return the reversed list.
+
+Input: head = [1, 2, 3, 4, 5], left = 2, right = 4
+Output: [1, 4, 3, 2, 5]
+
+Input: head = [5], left = 1, right = 1
+Output: [5] 
+
+Input : [10,20,30,40,50,60,70], left = 3, right = 6
+Output : [10,20,60,50,40,30,70]
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct ListNode {
+    int val;
+    struct ListNode *next;
+};
+
+struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
+    if (!head || left == right) return head;
+
+    struct ListNode dummy;
+    dummy.next = head;
+    struct ListNode* prev = &dummy;
+    for (int i = 1; i < left; i++) {
+        prev = prev->next;
+    }
+    struct ListNode* start = prev->next;
+    
+    struct ListNode* then = start->next;
+
+    for (int i = 0; i < right - left; i++) {
+        start->next = then->next; 
+        then->next = prev->next;   
+        prev->next = then;       
+        then = start->next;      
+    }
+
+    return dummy.next;
+}
+
+struct ListNode* createNode(int value) {
+    struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
+    newNode->val = value;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void printList(struct ListNode* head) {
+    struct ListNode* current = head;
+    while (current != NULL) {
+        printf("%d ", current->val);
+        current = current->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct ListNode* head = createNode(1);
+    head->next = createNode(2);
+    head->next->next = createNode(3);
+    head->next->next->next = createNode(4);
+    head->next->next->next->next = createNode(5);
+
+    printf("Original list: ");
+    printList(head);
+
+    head = reverseBetween(head, 2, 4);
+    printf("Reversed list (2 to 4): ");
+    printList(head);
+
+    return 0;
+}
+
+29.
+	You are given with the following linked list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void printReverse(struct Node* head) {
+    if (head == NULL) {
+        return;
+    }
+    
+    printReverse(head->next);
+    
+    printf("%d ", head->data);
+}
+
+struct Node* newNode(int data) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = data;
+    temp->next = NULL;
+    return temp;
+}
+
+int main() {
+
+    struct Node* head = newNode(3);
+    head->next = newNode(4);
+    head->next->next = newNode(2);
+    
+    printf("Linked List in Reverse Order: ");
+    printReverse(head);
+    printf("\n");
+    
+    return 0;
+}
+
+30.
+Given two sorted arrays nums1 and nums2 of size m and n respectively, return the sum of these two arrays
+Example 1:
+Input: nums1 = [1,3], nums2 = [2]
+Output: 6
+Example 2:
+Input: nums1 = [1,2], nums2 = [3,4]
+Output: 10
+
+
+#include <stdio.h>
+int sumOfTwoArrays(int nums1[], int m, int nums2[], int n) {
+    int i = 0, j = 0;
+    int sum = 0;
+    while (i < m && j < n) {
+        if (nums1[i] < nums2[j]) {
+            sum += nums1[i++];
+        } else {
+            sum += nums2[j++];
+        }
+    }
+    while (i < m) {
+        sum += nums1[i++];
+    }
+    while (j < n) {
+        sum += nums2[j++];
+    }
+    return sum;
+}
+
+int main() {
+    int nums1[] = {1, 3};
+    int m = sizeof(nums1) / sizeof(nums1[0]);
+    int nums2[] = {2};
+    int n = sizeof(nums2) / sizeof(nums2[0]);
+    printf("Output: %d\n", sumOfTwoArrays(nums1, m, nums2, n));
+    return 0;
+}
